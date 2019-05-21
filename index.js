@@ -11,6 +11,12 @@ const db = {
   })
 };
 
+// cors
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  next();
+});
+
 // 一覧取得
 app.get("/tasks", (req, res) => {
   db.tasks.find({}, (err, docs) => {
