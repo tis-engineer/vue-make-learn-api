@@ -11,8 +11,6 @@ const db = {
   })
 };
 
-app.routes("");
-
 // 一覧取得
 app.get("/tasks", (req, res) => {
   db.tasks.find({}, (err, docs) => {
