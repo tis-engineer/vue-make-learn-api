@@ -14,6 +14,7 @@ const db = {
 // cors
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Content-Type");
   next();
 });
 
@@ -25,12 +26,15 @@ app.get("/tasks", (req, res) => {
 });
 
 // 新規作成
-app.post("/tasks", (req, res) => {
+app.post("/tasks", (req, res, next) => {
+  if (!req.body.title || req.body.title === "") {
+    return res.status(400).send("title is reqired");
+  }
   db.tasks.insert(
     {
-      title: req.params.title,
-      detail: req.params.detail,
-      period: req.params.period
+      title: req.body.title,
+      detail: req.body.detail,
+      period: req.body.period
     },
     (err, newDoc) => {
       res.send(newDoc);
@@ -39,7 +43,10 @@ app.post("/tasks", (req, res) => {
 });
 
 // 内容更新
-app.put("/tasks/:id", (req, res) => {
+app.put("/tasks/:id", (req, res, next) => {
+  if (!req.body.title || req.body.title === "") {
+    return res.status(400).send("title is reqired");
+  }
   db.tasks.update(
     { _id: req.params.id },
     {
